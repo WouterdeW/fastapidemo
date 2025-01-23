@@ -2,6 +2,9 @@ SHELL = /bin/bash
 
 all: up init-db init-schema
 
+build:
+	docker build -t fastapidemo:latest .
+
 up: ## Starts docker-compose setup
 	docker-compose up -d
 

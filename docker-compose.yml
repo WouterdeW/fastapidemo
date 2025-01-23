@@ -21,6 +21,15 @@ services:
     networks:
       - demo
 
+  fastapi:
+    image: fastapidemo:latest
+    environment:
+      PGHOST: db
+    ports:
+      - 80:80
+    networks:
+      - demo
+
 volumes:
   pg-data:
     driver: local
