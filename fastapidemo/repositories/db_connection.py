@@ -1,22 +1,19 @@
 from typing import Annotated
 
-import psycopg
+from psycopg_pool import AsyncConnectionPool
 from fastapi import Depends
-from psycopg import Connection
 
 from .config import DatabaseConfig
 
 
-async def connect():
+async def connection_pool():
     config = DatabaseConfig()
-    async with await psycopg.AsyncConnection.connect(
-            f'host={config.pg_host} '
-            f'port={config.port} '
-            f'dbname={config.db_name} '
-            f'user={config.username} '
-            f'password={config.password}'
-    ) as conn:
-        yield conn
+    async with AsyncConnectionPool(
+            conninfo=f"postgresql://{config.username}:{config.password}@{config.pg_host}:{config.port}/{config.db_name}",
+            min_size=config.min_connections,
+            max_size=config.max_connections,
+            check=AsyncConnectionPool.check_connection
+    ) as pool:
+        yield pool
 
-
-ConnectDeps = Annotated[Connection, Depends(connect)]
+ConnectDeps = Annotated[AsyncConnectionPool, Depends(connection_pool)]

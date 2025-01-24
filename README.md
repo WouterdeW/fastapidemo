@@ -32,7 +32,6 @@ You can now play around with your API via `http://0.0.0.0:80` and get to the doc
 
 ## Next steps
 - Authentication.
-- Use connection pool.
 - Use SQLAlchemy.
 - Add a date filter on the list all courses endpoint.
 - Delete a course registration.

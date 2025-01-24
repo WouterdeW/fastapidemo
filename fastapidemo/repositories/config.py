@@ -8,3 +8,6 @@ class DatabaseConfig(BaseSettings):
     password = os.getenv('PGPW', "demop")
     port = os.getenv('PGPORT', "5432")
     db_name = "demo"
+    min_connections = 2
+    max_connections = 3
+
