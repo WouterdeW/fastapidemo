@@ -14,12 +14,12 @@ down: ## Stops docker-compose setup
 clean: ## Stop docker-compose setup and delete all volumes
 	docker-compose down --volumes --remove-orphans
 
-init-db: up ## Initialize xomnia database
+init-db: up ## Initialize database
 	@while ! docker ps --no-trunc --filter "label=com.docker.compose.service=db" | grep -q 'healthy'; do echo "initializing PostgreSQL.."; sleep 15; done
 	docker-compose exec -T db psql -h localhost -U postgres -f /tmp/sql/init-db.sql
 
 init-schema: up init-db
 	docker-compose exec -T db psql --dbname=demo --username=demo -f /tmp/sql/init-schema.sql
 
-test: ## Make sure you have your application running (in dev mode: fastapi dev main.py)
+test:
 	pytest -s -v tests
